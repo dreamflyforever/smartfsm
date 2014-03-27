@@ -4,14 +4,14 @@
 #define LIST_H
 
 #define INLINE static
-//创建的是双链表
+
 typedef struct LIST {
 	struct LIST	*next;
 	struct LIST	*previous;
 } LIST;
 
 
-#define list_entry(node, type, member)    ((type *)((U8 *)(node) - (U32)(&((type *)0)->member))) //模仿linux
+#define list_entry(node, type, member)    ((type *)((U8 *)(node) - (U32)(&((type *)0)->member))) 
 
 
 

@@ -1,8 +1,19 @@
+/*
+ * It's a part of YSJ_FSM, by Shanjin Yang.
+ * Email: sjyangv0@gmail.com
+ *
+ */
+
 #include "ysj_fsm.h"
 
 FSM *fsm_obj;
 STATE_DIS *state_obj;
 STATE_DIS *state_obj_copy;
+
+FSM fsm_default = 
+{
+    0, NULL, "state_default",
+};
 
 
 void fsm_init()
@@ -81,8 +92,10 @@ void state_tran( uint state )
             fsm_obj->func = tmp->func; 
             return 0; 
     }
+  
+    state_default(fsm_default.state, fsm_default.func, fsm_default.name);
     
-    printf("state is no found\n");
+    printf("state is no found, and fsm will transfer to default, It is name: %s\n", fsm_obj->name);
 }
 
 
@@ -93,4 +106,12 @@ void fsm_while(FSM *obj)
         obj->func(NULL);
     }
 }
+
+void state_default(uint state, FUNC_PTR func, uchar *name)
+{
+    fsm_obj->state = state;
+    fsm_obj->func  = func;
+    fsm_obj->name  = name;
+}
+
 
