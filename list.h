@@ -32,15 +32,27 @@ INLINE unsigned char is_list_empty(LIST *list)
 
 INLINE void list_insert(LIST *head, LIST *element)
 {
-	element->previous=  head;
+    element->previous=  head;
     element->next =element;
     head->next = element;
+    
+#if 0
+    element->next = head->next;
+    element->previous = head;
+
+    head->next->previous = element;
+    head->next           = element;
+#endif
 }
 
 
-INLINE void list_delete(LIST *element)
+INLINE int list_delete(LIST *element)
 {
-
+    if (is_list_empty(element))
+    {
+        element->previous->next = element->previous;
+        return 0;
+    }
 	element->previous->next = element->next;
 	element->next->previous = element->previous;
 	

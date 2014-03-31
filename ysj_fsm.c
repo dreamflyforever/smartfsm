@@ -45,6 +45,7 @@ void state_init( uint state, FUNC_PTR func, uchar *name )
 
 void state_add( uint state, FUNC_PTR func, uchar *name )
 {
+    /*Just make a symbol for state name*/
     uint token = (uint)(int *)name;
 
     STATE_OBJ_MALLOC_AND_INSERT(token, state, func, name);    
@@ -52,22 +53,37 @@ void state_add( uint state, FUNC_PTR func, uchar *name )
     state_obj = (&(state_obj->node))->next;
 }
 
-void state_remove( uint state )
+uint state_remove( uint state )
 {
-    STATE_DIS *tmp = state_obj;
+    STATE_DIS *tmp = state_obj_copy;
     while(!is_list_empty(&(tmp->node)))  
     {
         if ( tmp->state == state )
         {
             list_delete(&(tmp->node));
+            tmp->state = 10000;
+            tmp->func  = NULL;
+            tmp->name  = "";
             return 0;
         }
 
         tmp = (&(tmp->node))->next;
     }   
+    
+    if ( tmp->state == state )
+    {
+        list_delete(&(tmp->node)); 
+        
+        tmp->state = 10000;
+        tmp->func  = NULL;
+        tmp->name  = "";
+
+        return 0;
+    }
+    printf("State no fund\n");
 }
 
-void state_tran( uint state )
+uint state_tran( uint state )
 {
     STATE_DIS *tmp = state_obj_copy;    
 
@@ -92,7 +108,6 @@ void state_tran( uint state )
             fsm_obj->func = tmp->func; 
             return 0; 
     }
-  
     state_default(fsm_default.state, fsm_default.func, fsm_default.name);
     
     printf("state is no found, and fsm will transfer to default, It is name: %s\n", fsm_obj->name);
