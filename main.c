@@ -41,8 +41,7 @@ FSM user_app[3] = {
     {state3, three, "name_three"},
  };
 
-
-void main()
+int main()
 {
     SET_STATE_DEFAULT_FUNC(func_default);
     

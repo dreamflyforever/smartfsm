@@ -46,11 +46,11 @@ void state_init( uint state, FUNC_PTR func, uchar *name )
 void state_add( uint state, FUNC_PTR func, uchar *name )
 {
     /*Just make a symbol for state name*/
-    uint token = (uint)(int *)name;
+    uint token = (uint)*name;
 
     STATE_OBJ_MALLOC_AND_INSERT(token, state, func, name);    
 
-    state_obj = (&(state_obj->node))->next;
+    state_obj = (STATE_DIS *)(&(state_obj->node))->next;
 }
 
 uint state_remove( uint state )
@@ -67,7 +67,7 @@ uint state_remove( uint state )
             return 0;
         }
 
-        tmp = (&(tmp->node))->next;
+        tmp = (STATE_DIS *)(&(tmp->node))->next;
     }   
     
     if ( tmp->state == state )
@@ -97,7 +97,7 @@ uint state_tran( uint state )
             return 0; 
         }
 
-        tmp = (&(tmp->node))->next;
+        tmp = (STATE_DIS *)(&(tmp->node))->next;
     }    
     
     if ( tmp->state == state )
