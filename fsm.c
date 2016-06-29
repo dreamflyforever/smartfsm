@@ -39,7 +39,7 @@ int state_init(uint state, FUNC_PTR func, uchar *name)
 	state_obj->name  = name;
 
 	state_obj_copy = state_obj;
-	list_init( &(state_obj->node) );
+	list_init(&(state_obj->node));
 	return 0;
 }
 
@@ -54,7 +54,7 @@ int state_add(uint state, FUNC_PTR func, uchar *name)
 	return 0;
 }
 
-uint state_remove( uint state )
+uint state_remove(uint state)
 {
 	STATE_DIS *tmp = state_obj_copy;
 	while (!is_list_empty(&(tmp->node))) {
@@ -82,7 +82,7 @@ uint state_remove( uint state )
 	return 0;
 }
 
-uint state_tran( uint state )
+uint state_tran(uint state)
 {
 	STATE_DIS *tmp = state_obj_copy;
 
