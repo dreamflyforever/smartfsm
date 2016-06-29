@@ -1,2 +1,2 @@
 src = Glob('*.c')
-Program('hello',src)
+Program('smartfsm',src)
