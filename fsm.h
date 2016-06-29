@@ -1,5 +1,5 @@
 /*
- * It's a part of YSJ_FSM, by Shanjin Yang.
+ * It's a part of smartfsm, by Shanjin Yang.
  * Email: sjyangv0@gmail.com
  *
  */
@@ -29,7 +29,6 @@ typedef struct fsm_s {
 	uchar *name;
 } FSM;
 
-
 typedef struct state_dis_s {
 	LIST node;
 	uint state;
@@ -40,16 +39,16 @@ typedef struct state_dis_s {
 extern FSM *fsm_obj;
 extern FSM  fsm_default;
 
-void state_init( uint state, FUNC_PTR func, uchar *name );
+int state_init(uint state, FUNC_PTR func, uchar *name);
 
-void state_add( uint state, FUNC_PTR func, uchar *name );
+int state_add(uint state, FUNC_PTR func, uchar *name);
 
-uint state_remove( uint state );
+uint state_remove(uint state);
 
-uint state_tran( uint state );
+uint state_tran(uint state);
 
-void fsm_init();
+int fsm_init();
 
 void fsm_while(FSM *obj);
 
-void state_default(uint state, FUNC_PTR func, uchar *name);
+int state_default(uint state, FUNC_PTR func, uchar *name);

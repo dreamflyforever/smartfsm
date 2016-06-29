@@ -1,5 +1,5 @@
 /*
- * It's a part of YSJ_FSM, by Shanjin Yang.
+ * It's a part of smartfsm, by Shanjin Yang.
  * Email: sjyangv0@gmail.com
  *
  */
@@ -15,19 +15,19 @@ FSM fsm_default =
 	0, NULL, "state_default",
 };
 
-
-void fsm_init()
+int fsm_init()
 {
 	state_obj = (STATE_DIS *)malloc(sizeof(STATE_DIS));
 
-	fsm_obj   = (FSM *)malloc(sizeof(FSM));
+	fsm_obj = (FSM *)malloc(sizeof(FSM));
+	return 0;
 }
 
-void state_init( uint state, FUNC_PTR func, uchar *name )
+int state_init(uint state, FUNC_PTR func, uchar *name)
 {
 	fsm_init();
 
-	if ( (state_obj == NULL) || ( fsm_obj == NULL)) 
+	if ((state_obj == NULL) || ( fsm_obj == NULL)) 
 		ERROR_PRINTF;
 
 	fsm_obj->state = state;
@@ -40,10 +40,10 @@ void state_init( uint state, FUNC_PTR func, uchar *name )
 
 	state_obj_copy = state_obj;
 	list_init( &(state_obj->node) );
-
+	return 0;
 }
 
-void state_add( uint state, FUNC_PTR func, uchar *name )
+int state_add(uint state, FUNC_PTR func, uchar *name)
 {
 	/*Just make a symbol for state name*/
 	uint token = (uint)*name;
@@ -51,6 +51,7 @@ void state_add( uint state, FUNC_PTR func, uchar *name )
 	STATE_OBJ_MALLOC_AND_INSERT(token, state, func, name);
 
 	state_obj = (STATE_DIS *)(&(state_obj->node))->next;
+	return 0;
 }
 
 uint state_remove( uint state )
@@ -78,6 +79,7 @@ uint state_remove( uint state )
 		return 0;
 	}
 	printf("State no fund\n");
+	return 0;
 }
 
 uint state_tran( uint state )
@@ -105,8 +107,8 @@ uint state_tran( uint state )
 	state_default(fsm_default.state, fsm_default.func, fsm_default.name);
 
 	printf("state is no found, and fsm will transfer to default, It is name: %s\n", fsm_obj->name);
+	return 0;
 }
-
 
 void fsm_while(FSM *obj)
 {
@@ -116,9 +118,11 @@ void fsm_while(FSM *obj)
 	}
 }
 
-void state_default(uint state, FUNC_PTR func, uchar *name)
+int state_default(uint state, FUNC_PTR func, uchar *name)
 {
 	fsm_obj->state = state;
 	fsm_obj->func  = func;
 	fsm_obj->name  = name;
+
+	return 0;
 }

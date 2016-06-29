@@ -1,5 +1,5 @@
 /*
- * It's a Use-Case of YSJ_FSM, by Shanjin Yang.
+ * It's a Use-Case to smartfsm, write by Shanjin Yang.
  * Email: sjyangv0@gmail.com
  *
  */
