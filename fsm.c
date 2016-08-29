@@ -5,6 +5,7 @@
  */
 
 #include "fsm.h"
+#include <string.h>
 
 FSM *fsm_obj;
 STATE_DIS *state_obj;
@@ -18,8 +19,17 @@ FSM fsm_default =
 int fsm_init()
 {
 	state_obj = (STATE_DIS *)malloc(sizeof(STATE_DIS));
+	if (state_obj == NULL) {
+		printf("malloc error: %s %d\n", __FILE__, __LINE__);
+		return 0;
+	}
 
 	fsm_obj = (FSM *)malloc(sizeof(FSM));
+	if (fsm_obj == NULL) {
+		printf("malloc error: %s %d\n", __FILE__, __LINE__);
+		return 0;
+	}
+
 	return 0;
 }
 
@@ -82,7 +92,7 @@ uint state_remove(uint state)
 	return 0;
 }
 
-uint state_tran(uint state)
+uint state_tran(uint state, void *message)
 {
 	STATE_DIS *tmp = state_obj_copy;
 
@@ -91,6 +101,7 @@ uint state_tran(uint state)
 			fsm_obj->func = tmp->func;
 			fsm_obj->name = tmp->name; 
 			fsm_obj->state = state;
+			memcpy(fsm_obj->message, message, strlen((char *)message));
 			return 0; 
 		}
 
@@ -102,6 +113,7 @@ uint state_tran(uint state)
 		fsm_obj->state = state;
 
 		fsm_obj->func = tmp->func; 
+		memcpy(fsm_obj->message, message, strlen((char *)message));
 		return 0; 
 	}
 	state_default(fsm_default.state, fsm_default.func, fsm_default.name);
@@ -114,7 +126,7 @@ void fsm_while(FSM *obj)
 {
 	while (1) {
 		printf("state name = %s\n", obj->name);
-		obj->func(NULL);
+		obj->func(obj->message);
 	}
 }
 

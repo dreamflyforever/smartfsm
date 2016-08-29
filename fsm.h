@@ -27,6 +27,7 @@ typedef struct fsm_s {
 	uint state;  
 	FUNC_PTR func;
 	uchar *name;
+	char message[1024];
 } FSM;
 
 typedef struct state_dis_s {
@@ -45,7 +46,7 @@ int state_add(uint state, FUNC_PTR func, uchar *name);
 
 uint state_remove(uint state);
 
-uint state_tran(uint state);
+uint state_tran(uint state, void *message);
 
 int fsm_init();
 

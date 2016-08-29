@@ -13,26 +13,34 @@
 
 void one(void *arg)
 {
-	printf("one\n");
-	state_tran(2);
+	char *message = (char *)arg;
+	if (message != NULL)
+		printf("one: %s\n", message);
+	state_tran(2, "two message");
 }
 
 void two(void *arg)
 {
-	printf("two\n");
-	state_tran(3);
+	char *message = (char *)arg;
+	if (message != NULL)
+		printf("two: %s\n", message);
+	state_tran(3, "three message");
 }
 
 void three(void *arg)
 {
-	printf("three\n");
-	state_tran(10);
+	char *message = (char *)arg;
+	if (message != NULL)
+		printf("three: %s\n", message);
+	state_tran(10, "ten message");
 }
 
 void func_default(void *arg)
 {
-	printf("default\n");
-	state_tran(1);
+	char *message = (char *)arg;
+	if (message != NULL)
+		printf("default: %s\n", message);
+	state_tran(1, "default message");
 }
 
 FSM user_app[3] = {
