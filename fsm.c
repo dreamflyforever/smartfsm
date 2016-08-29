@@ -33,7 +33,7 @@ int fsm_init()
 	return 0;
 }
 
-int state_init(uint state, FUNC_PTR func, uchar *name)
+int state_init(int state, FUNC_PTR func, uchar *name)
 {
 	fsm_init();
 
@@ -53,10 +53,10 @@ int state_init(uint state, FUNC_PTR func, uchar *name)
 	return 0;
 }
 
-int state_add(uint state, FUNC_PTR func, uchar *name)
+int state_add(int state, FUNC_PTR func, uchar *name)
 {
 	/*Just make a symbol for state name*/
-	uint token = (uint)*name;
+	int token = (int)*name;
 
 	STATE_OBJ_MALLOC_AND_INSERT(token, state, func, name);
 
@@ -64,7 +64,7 @@ int state_add(uint state, FUNC_PTR func, uchar *name)
 	return 0;
 }
 
-uint state_remove(uint state)
+int state_remove(int state)
 {
 	STATE_DIS *tmp = state_obj_copy;
 	while (!is_list_empty(&(tmp->node))) {
@@ -92,16 +92,19 @@ uint state_remove(uint state)
 	return 0;
 }
 
-uint state_tran(uint state, void *message)
+int state_tran(int state, void *message)
 {
 	STATE_DIS *tmp = state_obj_copy;
 
+	memset(fsm_obj->message, 0, MSG_LEN);
 	while (!is_list_empty(&(tmp->node))) {
 		if (tmp->state == state) {
 			fsm_obj->func = tmp->func;
 			fsm_obj->name = tmp->name; 
 			fsm_obj->state = state;
-			memcpy(fsm_obj->message, message, strlen((char *)message));
+			if (message != NULL)
+				memcpy(fsm_obj->message, message, strlen((char *)message));
+
 			return 0; 
 		}
 
@@ -113,7 +116,8 @@ uint state_tran(uint state, void *message)
 		fsm_obj->state = state;
 
 		fsm_obj->func = tmp->func; 
-		memcpy(fsm_obj->message, message, strlen((char *)message));
+		if (message != NULL)
+			memcpy(fsm_obj->message, message, strlen((char *)message));
 		return 0; 
 	}
 	state_default(fsm_default.state, fsm_default.func, fsm_default.name);
@@ -130,7 +134,7 @@ void fsm_while(FSM *obj)
 	}
 }
 
-int state_default(uint state, FUNC_PTR func, uchar *name)
+int state_default(int state, FUNC_PTR func, uchar *name)
 {
 	fsm_obj->state = state;
 	fsm_obj->func  = func;
